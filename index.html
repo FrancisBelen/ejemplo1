@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para mi Mateito 💗</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; justify-content: center; align-items: center;
+      padding: 20px; font-family: "Segoe UI", system-ui, sans-serif;
+      background: radial-gradient(circle at top left, #fff7fa, transparent 35%), radial-gradient(circle at bottom right, #ffd7e4, transparent 40%), linear-gradient(135deg, #ffeaf1, #ffd6e3);
+      overflow: hidden; color: #4a2b36;
+    }
+    .card { width: min(520px, 94vw); min-height: 470px; background: rgba(255,255,255,.88); border: 1px solid rgba(255,255,255,.9); border-radius: 30px; box-shadow: 0 25px 70px rgba(172,74,109,.22); padding: 38px 28px 34px; text-align:center; position:relative; backdrop-filter: blur(10px); animation: enter .7s ease both; }
+    @keyframes enter { from {opacity:0; transform:translateY(20px) scale(.98)} to {opacity:1; transform:none} }
+    .heart { font-size:72px; animation: beat 1.15s infinite; display:inline-block; filter:drop-shadow(0 8px 12px rgba(233,95,135,.25)); }
+    @keyframes beat { 0%,100%{transform:scale(1)} 30%{transform:scale(1.14)} 50%{transform:scale(1.03)} 70%{transform:scale(1.12)} }
+    h1 { margin:10px 0 10px; font-size:clamp(30px,8vw,44px); line-height:1.1; }
+    .subtitle { font-size:18px; line-height:1.55; margin:0 auto 28px; max-width:420px; color:#6a4652; }
+    .buttons-area { position:relative; height:145px; margin-top:6px; }
+    button { border:0; border-radius:999px; padding:14px 28px; min-width:120px; font-size:18px; font-weight:800; cursor:pointer; transition:transform .18s ease, box-shadow .18s ease; user-select:none; touch-action:manipulation; }
+    #yesBtn { position:absolute; left:24%; top:38px; transform:translateX(-50%); background:linear-gradient(135deg,#e95f87,#f385a5); color:white; box-shadow:0 10px 24px rgba(233,95,135,.3); z-index:2; }
+    #yesBtn:hover { transform:translateX(-50%) scale(1.06); }
+    #noBtn { position:absolute; left:74%; top:38px; transform:translateX(-50%); background:#f2edf0; color:#694b55; box-shadow:0 8px 18px rgba(80,50,60,.12); z-index:3; }
+    .result { display:none; animation:pop .55s ease both; }
+    @keyframes pop { from {opacity:0; transform:scale(.92)} to {opacity:1; transform:scale(1)} }
+    .result h2 { font-size:clamp(30px,7vw,42px); margin:14px 0 12px; color:#d94f79; }
+    .result p { font-size:20px; line-height:1.6; margin:0; }
+    .big-love { font-size:78px; margin-top:12px; animation:beat 1.15s infinite; }
+    .floating-heart { position:fixed; bottom:-40px; pointer-events:none; animation:floatUp linear forwards; opacity:.85; z-index:99; }
+    @keyframes floatUp { from {transform:translateY(0) rotate(0deg); opacity:.9} to {transform:translateY(-115vh) rotate(25deg); opacity:0} }
+    .tiny { margin-top:8px; font-size:13px; opacity:.6; }
+  </style>
+</head>
+<body>
+  <main class="card" id="card">
+    <section id="question">
+      <div class="heart">💗</div>
+      <h1>¿Me perdonas, mi Mateito? 🥺</h1>
+      <p class="subtitle">Prometo darte muchos besitos, abrazos y amorcito para compensarte. Solo hay una respuesta correcta 😌💕</p>
+      <div class="buttons-area" id="buttonsArea">
+        <button id="yesBtn">Sí 💖</button>
+        <button id="noBtn">No 😒</button>
+      </div>
+      <div class="tiny">P.D.: el botón “No” está un poquito tímido 🤭</div>
+    </section>
+    <section class="result" id="result">
+      <div class="big-love">💞</div>
+      <h2>Sabía que dirías que sí 🥹💗</h2>
+      <p>Te adoro muchísimo, mi Mateito.<br>Más de lo que a veces sé explicar.<br>Gracias por perdonarme y por ser tú. ❤️</p>
+    </section>
+  </main>
+  <script>
+    const noBtn=document.getElementById("noBtn"), yesBtn=document.getElementById("yesBtn"), buttonsArea=document.getElementById("buttonsArea"), question=document.getElementById("question"), result=document.getElementById("result");
+    let escapes=0;
+    function moveNoButton(){
+      const areaRect=buttonsArea.getBoundingClientRect(), btnRect=noBtn.getBoundingClientRect();
+      const maxX=Math.max(10,areaRect.width-btnRect.width-10), maxY=Math.max(10,areaRect.height-btnRect.height-10);
+      noBtn.style.left=(Math.random()*maxX)+"px"; noBtn.style.top=(Math.random()*maxY)+"px"; noBtn.style.transform="none"; escapes++;
+      const texts=["No 😒","¿Seguro? 👀","Piénsalo 😭","Nop 😌","Atrápame 😝","No puedes 😏","Di que sí 💗"];
+      noBtn.textContent=texts[Math.min(escapes,texts.length-1)];
+    }
+    noBtn.addEventListener("mouseenter",moveNoButton);
+    noBtn.addEventListener("pointerdown",e=>{e.preventDefault();moveNoButton();});
+    noBtn.addEventListener("touchstart",e=>{e.preventDefault();moveNoButton();},{passive:false});
+    yesBtn.addEventListener("click",()=>{question.style.display="none"; result.style.display="block"; for(let i=0;i<45;i++) setTimeout(createHeart,i*55);});
+    function createHeart(){ const heart=document.createElement("div"); heart.className="floating-heart"; heart.textContent=["💗","💕","❤️","💖","💞","🥰"][Math.floor(Math.random()*6)]; heart.style.left=Math.random()*100+"vw"; heart.style.fontSize=(18+Math.random()*28)+"px"; heart.style.animationDuration=(3.2+Math.random()*2.8)+"s"; document.body.appendChild(heart); setTimeout(()=>heart.remove(),6500); }
+  </script>
+</body>
+</html>
